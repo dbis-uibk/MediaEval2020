@@ -1,0 +1,36 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+[dev-packages]
+PyInstaller = "*"
+bandit = "*"
+bumpversion = "*"
+colour-runner = "*"
+coverage = "*"
+docformatter = "*"
+dvc = "*"
+flake8 = "*"
+flake8-bugbear = "*"
+flake8-builtins = "*"
+flake8-commas = "*"
+flake8-deprecated = "*"
+flake8-docstrings = "*"
+flake8-isort = "*"
+isort = "*"
+m2r = "*"
+pep8-naming = "*"
+pylint = "*"
+pytest = "*"
+pytype = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+tox = "*"
+twine = "*"
+watchdog = "*"
+wheel = "*"
+yapf = "*"
+
+[packages]
+mediaeval2020 = {path = ".", editable = true}
+click = "*"
