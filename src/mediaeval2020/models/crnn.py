@@ -21,9 +21,10 @@ from tensorflow.keras.layers import RepeatVector
 from tensorflow.keras.layers import Reshape
 from tensorflow.keras.layers import ZeroPadding2D
 from tensorflow.keras.models import Model
-from utils import cached_model_predict
-from utils import cached_model_predict_clear
-from utils import find_elbow
+
+from ..utils import cached_model_predict
+from ..utils import cached_model_predict_clear
+from ..utils import find_elbow
 
 
 class CRNNModel(BaseEstimator, ClassifierMixin):

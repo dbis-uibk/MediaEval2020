@@ -34,3 +34,5 @@ yapf = "*"
 [packages]
 mediaeval2020 = {path = ".", editable = true}
 click = "*"
+logzero = "*"
+tensorflow = "*"
