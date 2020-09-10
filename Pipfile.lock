@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ac41258de4409d25de460188ac1869844341fe722e7b66114922ab4d40108b7a"
+            "sha256": "1ff8b7154b0878125ad857722568b0048df460aa79b771b87b1c30a67b37613d"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -65,10 +65,10 @@
         },
         "dbispipeline": {
             "hashes": [
-                "sha256:6a9f0d358bbb9f5f278b89863fc5107ccfc540049e64810537d1dad154001152",
-                "sha256:89d17a0aa450ede34040bca9dcee3b374f9c3ec769745b5f8df8e30a8186a65d"
+                "sha256:05b924a57c692bce3fd3a736c095bcf10a7fa11e76fd62a43b2ccfe4982d557e",
+                "sha256:343b73a8381de74d9cee6a2371c145fd19b625d86e6d67a730c485a9bac5d479"
             ],
-            "version": "==0.7.0"
+            "version": "==0.7.1"
         },
         "gast": {
             "hashes": [
