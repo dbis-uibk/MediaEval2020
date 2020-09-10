@@ -44,12 +44,12 @@ class CRNNModel(BaseEstimator, ClassifierMixin):
         self.network_input_width = 1440
         self.attention = attention
 
-    def fit(self, X, y):
+    def fit(self, X, y, epochs):
         X = self._reshape_data(X)
         input_shape, output_shape = self._data_shapes(X, y)
         self._create_model(input_shape, output_shape)
 
-        self.model.fit(X, y, batch_size=self.batch_size, epochs=self.epochs)
+        self.model.fit(X, y, batch_size=self.batch_size, epochs=epochs)
         cached_model_predict_clear()
 
         if self.dataloader:
