@@ -1,4 +1,4 @@
-from dbispipeline.evaluators import FixedSplitEvaluator
+from dbispipeline.evaluators import EpochEvaluator
 from dbispipeline.evaluators import ModelCallbackWrapper
 import dbispipeline.result_handlers
 from sklearn.pipeline import Pipeline
@@ -22,7 +22,7 @@ pipeline = Pipeline([
 ])
 
 evaluator = ModelCallbackWrapper(
-    FixedSplitEvaluator(**common.fixed_split_params()),
+    EpochEvaluator(**common.fixed_split_params()),
     lambda model: common.store_prediction(model, dataloader),
 )
 
