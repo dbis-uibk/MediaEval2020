@@ -80,8 +80,8 @@ def store_prediction(model, dataloader, file_name_prefix=None):
     elif file_name_prefix[-1] != '_':
         file_name_prefix += '_'
 
-    if store['config_path']:
-        file_name_prefix += splitext(basename(store['config_path']))[0]
+    if store['plan_path']:
+        file_name_prefix += splitext(basename(store['plan_path']))[0]
 
     x_test, _ = dataloader.load_test()
     y_pred = model.predict(x_test)
