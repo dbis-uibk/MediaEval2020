@@ -20,7 +20,8 @@ class MelSpectrogramsLoader(TrainValidateTestLoader):
                  validate_path=None,
                  window='center',
                  window_size=1366,
-                 num_windows=1):
+                 num_windows=1,
+                 flatten=False):
         self.training_path = training_path
         self.test_path = test_path
         self.validate_path = validate_path
@@ -30,6 +31,7 @@ class MelSpectrogramsLoader(TrainValidateTestLoader):
         self.num_windows = num_windows
         self.mlb = MultiLabelBinarizer()
         self.mlb_fit = True
+        self.flatten = flatten
 
     def _load_set(self, set_path, sub_sampling):
         sample_set = utils.load_set_info(set_path)[['PATH', 'TAGS']]
@@ -42,6 +44,8 @@ class MelSpectrogramsLoader(TrainValidateTestLoader):
         else:
             y = self.mlb.transform(y)
 
+        if self.flatten:
+            return X.flatten(), y
         return X, y
 
     def _load_data(self, sample_set, sub_sampling):
