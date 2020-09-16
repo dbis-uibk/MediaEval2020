@@ -83,8 +83,16 @@ def store_prediction(model, dataloader, file_name_prefix=None):
     if store['plan_path']:
         file_name_prefix += splitext(basename(store['plan_path']))[0]
 
+    result_folder = 'results/'
+
     x_test, _ = dataloader.load_test()
     y_pred = model.predict(x_test)
-    np.save(file_name_prefix + '_decisions.npy', y_pred.astype(bool))
+    np.save(
+        result_folder + file_name_prefix + '_decisions.npy',
+        y_pred.astype(bool),
+    )
     y_pred = model.predict_proba(x_test)
-    np.save(file_name_prefix + '_predictions.npy', y_pred.astype(np.float64))
+    np.save(
+        result_folder + file_name_prefix + '_predictions.npy',
+        y_pred.astype(np.float64),
+    )
