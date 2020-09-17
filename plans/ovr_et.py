@@ -1,4 +1,4 @@
-from dbispipeline.evaluators import EpochEvaluator
+from dbispipeline.evaluators import FixedSplitEvaluator
 from dbispipeline.evaluators import ModelCallbackWrapper
 import dbispipeline.result_handlers
 from sklearn.ensemble import ExtraTreesClassifier
@@ -28,7 +28,7 @@ pipeline = Pipeline([
 ])
 
 evaluator = ModelCallbackWrapper(
-    EpochEvaluator(**common.fixed_split_params(), scoring_step_size=5),
+    FixedSplitEvaluator(**common.fixed_split_params(), scoring_step_size=5),
     lambda model: common.store_prediction(model, dataloader),
 )
 
