@@ -1,4 +1,5 @@
 from os import path
+import pickle
 
 from dbispipeline.base import TrainValidateTestLoader
 import numpy as np
@@ -111,3 +112,30 @@ class MelSpectrogramsLoader(TrainValidateTestLoader):
             'num_windows': self.num_windows,
             'classes': classes,
         }
+
+
+def MelSpectPickleLoader(TrainValidateTestLoader):
+    """Loads the data from a pickle file."""
+
+    def __init__(self, pickle_file):
+        self.data = pickle.load(open(pickle_file, 'rb'))
+
+    def load_train(self):
+        """Returns the train data."""
+        return self.data['train']
+
+    def load_validate(self):
+        """Returns the validate data."""
+        return self.data['validate']
+
+    def load_test(self):
+        """Returns the test data."""
+        return self.data['test']
+
+    @property
+    def configuration(self):
+        """Returns a dict-like representation of the configuration of this loader.
+
+        This is for storing its state in the database.
+        """
+        return self.data['configuration']
