@@ -40,7 +40,7 @@ class CNNModel(BaseEstimator, ClassifierMixin):
         self.dataloader = dataloader
         self.network_input_width = 1440
 
-    def fit(self, X, y, epochs):
+    def fit(self, X, y, epochs=self.epochs):
         X = self._reshape_data(X)
         input_shape, output_shape = self._data_shapes(X, y)
         self._create_model(input_shape, output_shape)
