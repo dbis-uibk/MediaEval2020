@@ -17,7 +17,6 @@ dataloader = MelSpectrogramsLoader(
     test_path="data/mediaeval2019/autotagging_moodtheme-test.tsv",
     validate_path="data/mediaeval2019/autotagging_moodtheme-validation.tsv",
     window_size=WINDOW_SIZE,
-    flatten=True,
 )
 
 pipeline = Pipeline([
