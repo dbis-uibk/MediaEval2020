@@ -15,23 +15,19 @@ dataloader = MelSpectrogramsLoader(
     window_size=WINDOW_SIZE,
 )
 
-file_prefix = 'data/mediaeval2020'
-file_prefix += ('/melspect_' + str(WINDOW_SIZE))
+file_name = 'data/mediaeval2020'
+file_name += ('/melspect_' + str(WINDOW_SIZE))
 
-logger.info('Store train data')
-pickle.dump(
-    dataloader.load_train(),
-    open(file_prefix + '_train.pickle', 'wb'),
-)
+logger.info('Extract data')
+data = {
+    'train': dataloader.load_train(),
+    'test': dataloader.load_test(),
+    'validate': dataloader.load_validate(),
+    'configuration': dataloader.configuration,
+}
 
-logger.info('Store validate data')
+logger.info('Store melspect data')
 pickle.dump(
-    dataloader.load_validate(),
-    open(file_prefix + '_validate.pickle', 'wb'),
-)
-
-logger.info('Store test data')
-pickle.dump(
-    dataloader.load_test(),
-    open(file_prefix + '_test.pickle', 'wb'),
+    data,
+    open(file_name, 'wb'),
 )
