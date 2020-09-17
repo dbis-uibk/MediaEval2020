@@ -28,7 +28,7 @@ pipeline = Pipeline([
 ])
 
 evaluator = ModelCallbackWrapper(
-    FixedSplitEvaluator(**common.fixed_split_params(), scoring_step_size=5),
+    FixedSplitEvaluator(**common.fixed_split_params()),
     lambda model: common.store_prediction(model, dataloader),
 )
 
