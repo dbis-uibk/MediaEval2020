@@ -45,7 +45,7 @@ class CNNModel(BaseEstimator, ClassifierMixin):
         input_shape, output_shape = self._data_shapes(X, y)
         self._create_model(input_shape, output_shape)
 
-        self.model.fit(X, y, batch_size=self.batch_size, epochs=epochs)
+        self.model.fit(X, y, batch_size=self.batch_size, epochs=self.epochs)
         cached_model_predict_clear()
 
         if self.dataloader:
