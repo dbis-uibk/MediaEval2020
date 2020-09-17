@@ -114,7 +114,7 @@ class MelSpectrogramsLoader(TrainValidateTestLoader):
         }
 
 
-def MelSpectPickleLoader(TrainValidateTestLoader):
+class MelSpectPickleLoader(TrainValidateTestLoader):
     """Loads the data from a pickle file."""
 
     def __init__(self, pickle_file):
