@@ -30,4 +30,5 @@ logger.info('Store melspect data')
 pickle.dump(
     data,
     open(file_name, 'wb'),
+    protocol=pickle.HIGHEST_PROTOCOL,
 )
