@@ -40,9 +40,7 @@ class CNNModel(BaseEstimator, ClassifierMixin):
         self.dataloader = dataloader
         self.network_input_width = 1440
 
-    def fit(self, X, y, epochs=None):
-        if epochs is None:
-            epochs = self.epochs
+    def fit(self, X, y):
         X = self._reshape_data(X)
         input_shape, output_shape = self._data_shapes(X, y)
         self._create_model(input_shape, output_shape)
@@ -85,7 +83,10 @@ class CNNModel(BaseEstimator, ClassifierMixin):
         if X.shape[2] > self.network_input_width:
             raise ValueError('window_size > ' + str(self.network_input_width))
         input_shape = (X.shape[1], X.shape[2], X.shape[3])
-        output_shape = y.shape[1]
+        try:
+            output_shape = y.shape[1]
+        except IndexError:
+            output_shape = 1
 
         return input_shape, output_shape
 
