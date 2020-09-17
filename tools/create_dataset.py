@@ -16,7 +16,7 @@ dataloader = MelSpectrogramsLoader(
 )
 
 file_name = 'data/mediaeval2020'
-file_name += ('/melspect_' + str(WINDOW_SIZE))
+file_name += ('/melspect_' + str(WINDOW_SIZE) + '.pickle')
 
 logger.info('Extract data')
 data = {
