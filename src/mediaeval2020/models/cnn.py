@@ -194,25 +194,6 @@ class CNNModel(BaseEstimator, ClassifierMixin):
         hidden = MaxPooling2D(pool_size=(2, 2), name='pool4')(hidden)
         hidden = AlphaDropout(0.1, name='dropout4')(hidden)
 
-        # Conv block 5
-        hidden = Conv2D(
-            64,
-            (3, 3),
-            name='conv5-1',
-            kernel_initializer='lecun_normal',
-            bias_initializer='zeros',
-        )(hidden)
-        hidden = Activation('selu', name='selu5-1')(hidden)
-        hidden = Conv2D(
-            64,
-            (3, 3),
-            name='conv5-2',
-            kernel_initializer='lecun_normal',
-            bias_initializer='zeros',
-        )(hidden)
-        hidden = Activation('selu', name='selu5-2')(hidden)
-        hidden = MaxPooling2D(pool_size=(2, 2), name='pool5')(hidden)
-        hidden = AlphaDropout(0.1, name='dropout5')(hidden)
         # reshaping
         hidden = Flatten()(hidden)
         hidden = Dense(
