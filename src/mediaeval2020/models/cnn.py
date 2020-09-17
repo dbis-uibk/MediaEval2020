@@ -137,7 +137,7 @@ class CNNModel(BaseEstimator, ClassifierMixin):
         hidden = Conv2D(
             64,
             (3, 3),
-            name='conv2_1',
+            name='conv2-1',
             kernel_initializer='lecun_normal',
             bias_initializer='zeros',
         )(hidden)
@@ -145,13 +145,53 @@ class CNNModel(BaseEstimator, ClassifierMixin):
         hidden = Conv2D(
             64,
             (3, 3),
-            name='conv2_2',
+            name='conv2-2',
             kernel_initializer='lecun_normal',
             bias_initializer='zeros',
         )(hidden)
         hidden = Activation('selu', name='selu2-2')(hidden)
         hidden = MaxPooling2D(pool_size=(2, 2), name='pool2')(hidden)
         hidden = AlphaDropout(0.1, name='dropout2')(hidden)
+
+        # Conv block 3
+        hidden = Conv2D(
+            64,
+            (3, 3),
+            name='conv3-1',
+            kernel_initializer='lecun_normal',
+            bias_initializer='zeros',
+        )(hidden)
+        hidden = Activation('selu', name='selu3-1')(hidden)
+        hidden = Conv2D(
+            64,
+            (3, 3),
+            name='conv3-2',
+            kernel_initializer='lecun_normal',
+            bias_initializer='zeros',
+        )(hidden)
+        hidden = Activation('selu', name='selu3-2')(hidden)
+        hidden = MaxPooling2D(pool_size=(2, 2), name='pool3')(hidden)
+        hidden = AlphaDropout(0.1, name='dropout3')(hidden)
+
+        # Conv block 4
+        hidden = Conv2D(
+            64,
+            (3, 3),
+            name='conv4-1',
+            kernel_initializer='lecun_normal',
+            bias_initializer='zeros',
+        )(hidden)
+        hidden = Activation('selu', name='selu4-1')(hidden)
+        hidden = Conv2D(
+            64,
+            (3, 3),
+            name='conv4-2',
+            kernel_initializer='lecun_normal',
+            bias_initializer='zeros',
+        )(hidden)
+        hidden = Activation('selu', name='selu4-2')(hidden)
+        hidden = MaxPooling2D(pool_size=(2, 2), name='pool4')(hidden)
+        hidden = AlphaDropout(0.1, name='dropout4')(hidden)
 
         # reshaping
         hidden = Flatten()(hidden)
