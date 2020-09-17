@@ -1,3 +1,4 @@
 ---
 datasets:
   - music/mediaeval2019
+  - music/mediaeval2020
