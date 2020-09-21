@@ -43,13 +43,19 @@ class CNNModel(BaseEstimator, ClassifierMixin):
         else:
             self.block_sizes = block_sizes
         self.network_input_width = 1440
+        self.model = None
 
-    def fit(self, X, y):
+    def fit(self, X, y, epochs=None):
         X = self._reshape_data(X)
         input_shape, output_shape = self._data_shapes(X, y)
-        self._create_model(input_shape, output_shape)
 
-        self.model.fit(X, y, batch_size=self.batch_size, epochs=self.epochs)
+        if self.model is None:
+            self._create_model(input_shape, output_shape)
+
+        if epochs is None:
+            epochs = self.epochs
+
+        self.model.fit(X, y, batch_size=self.batch_size, epochs=epochs)
         cached_model_predict_clear()
 
         if self.dataloader:
@@ -99,7 +105,7 @@ class CNNModel(BaseEstimator, ClassifierMixin):
         self.model = Model(inputs=melgram_input, outputs=output)
         self.model.compile(optimizer=RMSprop(lr=0.0001, decay=1e-6),
                            loss="categorical_crossentropy",
-                           metrics=['accuracy'])
+                           metrics=['categorical_accuracy'])
         self.model.summary()
 
     def _cnn_layers(self, input_shape, output_shape):

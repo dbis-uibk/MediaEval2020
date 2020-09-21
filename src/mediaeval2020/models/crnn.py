@@ -41,15 +41,21 @@ class CRNNModel(BaseEstimator, ClassifierMixin):
         self.padding = padding
         self.dataloader = dataloader
         self.output_dropout = output_dropout
-        self.network_input_width = 1440
         self.attention = attention
+        self.network_input_width = 1440
+        self.model = None
 
-    def fit(self, X, y):
+    def fit(self, X, y, epochs=None):
         X = self._reshape_data(X)
         input_shape, output_shape = self._data_shapes(X, y)
-        self._create_model(input_shape, output_shape)
 
-        self.model.fit(X, y, batch_size=self.batch_size, epochs=self.epochs)
+        if self.model is None:
+            self._create_model(input_shape, output_shape)
+
+        if epochs is None:
+            epochs = self.epochs
+
+        self.model.fit(X, y, batch_size=self.batch_size, epochs=epochs)
         cached_model_predict_clear()
 
         if self.dataloader:
@@ -96,7 +102,7 @@ class CRNNModel(BaseEstimator, ClassifierMixin):
         self.model = Model(inputs=melgram_input, outputs=output)
         self.model.compile(optimizer="adam",
                            loss="categorical_crossentropy",
-                           metrics=['accuracy'])
+                           metrics=['categorical_accuracy'])
         self.model.summary()
 
     def _crnn_layers(self, input_shape, output_shape):

@@ -1,7 +1,6 @@
 from dbispipeline.evaluators import FixedSplitEvaluator
 from dbispipeline.evaluators import ModelCallbackWrapper
 import dbispipeline.result_handlers
-from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.pipeline import Pipeline
 
