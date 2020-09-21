@@ -30,14 +30,18 @@ class CNNModel(BaseEstimator, ClassifierMixin):
 
     def __init__(self,
                  batch_size=64,
-                 epochs=100,
+                 epochs=10,
                  padding='same',
                  dataloader=None,
-                 output_dropout=0.3):
+                 block_sizes=None):
         self.batch_size = batch_size
         self.epochs = epochs
         self.padding = padding
         self.dataloader = dataloader
+        if block_sizes is None:
+            self.block_sizes = [32, 64, 64, 64]
+        else:
+            self.block_sizes = block_sizes
         self.network_input_width = 1440
 
     def fit(self, X, y):
@@ -113,86 +117,13 @@ class CNNModel(BaseEstimator, ClassifierMixin):
         input_padding = ((0, 0), (left_pad, right_pad))
         hidden = ZeroPadding2D(padding=input_padding)(melgram_input)
 
-        # Conv block 1
-        hidden = Conv2D(
-            32,
-            (3, 3),
-            padding=self.padding,
-            name='conv1-1',
-            kernel_initializer='lecun_normal',
-            bias_initializer='zeros',
-        )(hidden)
-        hidden = Activation('selu', name='selu1-1')(hidden)
-        hidden = Conv2D(
-            32,
-            (3, 3),
-            name='conv1-2',
-            kernel_initializer='lecun_normal',
-            bias_initializer='zeros',
-        )(hidden)
-        hidden = Activation('selu', name='selu1-2')(hidden)
-        hidden = MaxPooling2D(pool_size=(2, 2), name='pool1')(hidden)
-        hidden = AlphaDropout(0.1, name='dropout1')(hidden)
-
-        # Conv block 2
-        hidden = Conv2D(
-            64,
-            (3, 3),
-            name='conv2-1',
-            kernel_initializer='lecun_normal',
-            bias_initializer='zeros',
-        )(hidden)
-        hidden = Activation('selu', name='selu2-1')(hidden)
-        hidden = Conv2D(
-            64,
-            (3, 3),
-            name='conv2-2',
-            kernel_initializer='lecun_normal',
-            bias_initializer='zeros',
-        )(hidden)
-        hidden = Activation('selu', name='selu2-2')(hidden)
-        hidden = MaxPooling2D(pool_size=(2, 2), name='pool2')(hidden)
-        hidden = AlphaDropout(0.1, name='dropout2')(hidden)
-
-        # Conv block 3
-        hidden = Conv2D(
-            64,
-            (3, 3),
-            name='conv3-1',
-            kernel_initializer='lecun_normal',
-            bias_initializer='zeros',
-        )(hidden)
-        hidden = Activation('selu', name='selu3-1')(hidden)
-        hidden = Conv2D(
-            64,
-            (3, 3),
-            name='conv3-2',
-            kernel_initializer='lecun_normal',
-            bias_initializer='zeros',
-        )(hidden)
-        hidden = Activation('selu', name='selu3-2')(hidden)
-        hidden = MaxPooling2D(pool_size=(2, 2), name='pool3')(hidden)
-        hidden = AlphaDropout(0.1, name='dropout3')(hidden)
-
-        # Conv block 4
-        hidden = Conv2D(
-            64,
-            (3, 3),
-            name='conv4-1',
-            kernel_initializer='lecun_normal',
-            bias_initializer='zeros',
-        )(hidden)
-        hidden = Activation('selu', name='selu4-1')(hidden)
-        hidden = Conv2D(
-            64,
-            (3, 3),
-            name='conv4-2',
-            kernel_initializer='lecun_normal',
-            bias_initializer='zeros',
-        )(hidden)
-        hidden = Activation('selu', name='selu4-2')(hidden)
-        hidden = MaxPooling2D(pool_size=(2, 2), name='pool4')(hidden)
-        hidden = AlphaDropout(0.1, name='dropout4')(hidden)
+        for idx, size in enumerate(self.block_sizes):
+            hidden = conv_block(
+                block_id=idx,
+                filters=size,
+                padding=self.padding,
+                input_layer=hidden,
+            )
 
         # reshaping
         hidden = Flatten()(hidden)
@@ -225,3 +156,29 @@ class CNNModel(BaseEstimator, ClassifierMixin):
 
     def _reshape_data(self, X):
         return X
+
+
+def conv_block(block_id, filters, padding, input_layer):
+    name = 'block-' + str(block_id) + '--'
+    hidden = Conv2D(
+        filters,
+        (3, 3),
+        padding=padding,
+        name=name + 'conv-1',
+        kernel_initializer='lecun_normal',
+        bias_initializer='zeros',
+    )(input_layer)
+    hidden = Activation('selu', name=name + 'selu-1')(hidden)
+    hidden = Conv2D(
+        filters,
+        (3, 3),
+        padding=padding,
+        name=name + 'conv-2',
+        kernel_initializer='lecun_normal',
+        bias_initializer='zeros',
+    )(hidden)
+    hidden = Activation('selu', name=name + 'selu-2')(hidden)
+    hidden = MaxPooling2D(pool_size=(2, 2), name=name + 'pool-1')(hidden)
+    output_layer = AlphaDropout(0.1, name=name + 'dropout-1')(hidden)
+
+    return output_layer
