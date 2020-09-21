@@ -172,7 +172,6 @@ def conv_block(block_id, filters, padding, input_layer):
     hidden = Conv2D(
         filters,
         (3, 3),
-        padding=padding,
         name=name + 'conv-2',
         kernel_initializer='lecun_normal',
         bias_initializer='zeros',
