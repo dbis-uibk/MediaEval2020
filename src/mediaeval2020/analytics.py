@@ -43,7 +43,7 @@ def print_confusion_matrix(confusion_matrix,
     try:
         heatmap = sns.heatmap(confusion_matrix, annot=True, fmt=fmt)
     except ValueError:
-        raise ValueError("Confusion matrix values must be integers.")
+        raise ValueError('Confusion matrix values must be integers.')
     plt.setp(heatmap.yaxis.get_ticklabels(),
              rotation=0,
              ha='right',
@@ -60,7 +60,7 @@ def print_confusion_matrix(confusion_matrix,
 
 
 def print_per_label(data, figsize=(10, 7), fontsize=11):
-    sns.set(style="whitegrid")
+    sns.set(style='whitegrid')
     fig = plt.figure(figsize=figsize)
     lineplot = sns.lineplot(
         data=data,
@@ -105,7 +105,9 @@ def extract_metrics(database_entry):
     recall_all = []
     f1_all = []
 
-    for label_cf in database_entry.outcome['confusion_matrix']:
+    outcome = extract_final_outcome(database_entry.outcome)
+
+    for label_cf in outcome['confusion_matrix']:
         tn, fp, fn, tp = np.array(label_cf).ravel()
         accuracy_all.append((tp + tn) / (tp + tn + fp + fn))
         precision_all.append(tp / (tp + fp))
@@ -113,8 +115,8 @@ def extract_metrics(database_entry):
         f1_all.append(2 * tp / (2 * tp + fp + fn))
 
     data = zip(
-        database_entry.outcome['roc_auc_all'],
-        database_entry.outcome['average_precision_all'],
+        outcome['roc_auc_all'],
+        outcome['average_precision_all'],
         accuracy_all,
         precision_all,
         recall_all,
@@ -138,3 +140,11 @@ def plot_per_label(database_entry):
 
 def _strip_labels(labels):
     return list(map(lambda name: str(name[13:]), labels))
+
+
+def extract_final_outcome(outcome):
+    try:
+        key = max([int(e) for e in outcome.keys()])
+        return outcome[str(key)]
+    except ValueError:
+        return outcome
