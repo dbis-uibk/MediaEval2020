@@ -27,7 +27,7 @@ pipeline = Pipeline([
 ])
 
 evaluator = ModelCallbackWrapper(
-    EpochEvaluator(**common.fixed_split_params()),
+    EpochEvaluator(**common.fixed_split_params(), scoring_step_size=5),
     lambda model: common.store_prediction(model, dataloader),
 )
 
