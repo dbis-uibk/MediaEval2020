@@ -95,7 +95,7 @@ class CRNNModel(BaseEstimator, ClassifierMixin):
         melgram_input, output = self._crnn_layers(input_shape, output_shape)
         self.model = Model(inputs=melgram_input, outputs=output)
         self.model.compile(optimizer="adam",
-                           loss="binary_crossentropy",
+                           loss="categorical_crossentropy",
                            metrics=['accuracy'])
         self.model.summary()
 

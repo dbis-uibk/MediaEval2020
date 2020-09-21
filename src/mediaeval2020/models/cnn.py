@@ -209,7 +209,7 @@ class CNNModel(BaseEstimator, ClassifierMixin):
             kernel_initializer='lecun_normal',
             bias_initializer='zeros',
         )(hidden)
-        output = Activation('softmax')(hidden)
+        output = Activation('sigmoid')(hidden)
 
         return melgram_input, output
 
