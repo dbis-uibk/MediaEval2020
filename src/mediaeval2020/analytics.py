@@ -148,3 +148,21 @@ def extract_final_outcome(outcome):
         return outcome[str(key)]
     except ValueError:
         return outcome
+
+
+def extract_best_epoch(outcome, metric):
+    best_epoch = None
+    max_score = float('-inf')
+
+    for epoch, score in outcome.items():
+        if max_score <= score[metric]:
+            max_score = score[metric]
+            best_epoch = epoch
+
+    return best_epoch
+
+
+def extract_best_outcome(outcome, metric):
+    max_epoch = extract_best_epoch(outcome, metric)
+
+    return outcome[max_epoch]
