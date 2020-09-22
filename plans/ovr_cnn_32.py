@@ -1,3 +1,4 @@
+"""One vs Rest CNN plan."""
 from dbispipeline.evaluators import FixedSplitEvaluator
 from dbispipeline.evaluators import ModelCallbackWrapper
 import dbispipeline.result_handlers
@@ -11,7 +12,7 @@ from mediaeval2020.models.cnn import CNNModel
 dataloader = MelSpectPickleLoader('data/mediaeval2020/melspect_1366.pickle')
 
 pipeline = Pipeline([
-    ("model", OneVsRestClassifier(CNNModel(epochs=8, dataloader=dataloader))),
+    ('model', OneVsRestClassifier(CNNModel(epochs=32, dataloader=dataloader))),
 ])
 
 evaluator = ModelCallbackWrapper(
