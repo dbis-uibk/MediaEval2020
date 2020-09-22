@@ -12,7 +12,19 @@ from mediaeval2020.models.cnn import CNNModel
 dataloader = MelSpectPickleLoader('data/mediaeval2020/melspect_1366.pickle')
 
 pipeline = Pipeline([
-    ('model', OneVsRestClassifier(CNNModel(epochs=8, dataloader=dataloader))),
+    ('model',
+     OneVsRestClassifier(
+         CNNModel(
+             epochs=8,
+             dataloader=dataloader,
+             block_sizes=[
+                 32,
+                 32,
+                 64,
+                 64,
+                 64,
+             ],
+         ))),
 ])
 
 evaluator = ModelCallbackWrapper(
