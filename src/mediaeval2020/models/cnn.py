@@ -104,14 +104,14 @@ class CNNModel(BaseEstimator, ClassifierMixin):
         melgram_input, output = self._cnn_layers(input_shape, output_shape)
         self.model = Model(inputs=melgram_input, outputs=output)
         self.model.compile(optimizer=RMSprop(lr=0.0001, decay=1e-6),
-                           loss="categorical_crossentropy",
+                           loss='categorical_crossentropy',
                            metrics=['categorical_accuracy'])
         self.model.summary()
 
     def _cnn_layers(self, input_shape, output_shape):
         channel_axis = 3
 
-        melgram_input = Input(shape=input_shape, dtype="float32")
+        melgram_input = Input(shape=input_shape, dtype='float32')
 
         # Input block
         padding = self.network_input_width - input_shape[1]
@@ -134,7 +134,7 @@ class CNNModel(BaseEstimator, ClassifierMixin):
         # reshaping
         hidden = Flatten()(hidden)
         hidden = Dense(
-            512,
+            256,
             name='dense1',
             kernel_initializer='lecun_normal',
             bias_initializer='zeros',
