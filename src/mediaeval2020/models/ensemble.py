@@ -36,5 +36,5 @@ class Ensemble(BaseEstimator, ClassifierMixin):
             elif type == 'label':
                 predictions.append(model.predict(data))
 
-        predictions = np.array(predictions).ravel()
+        predictions = np.stack(predictions, axis=-1)
         return predictions[self.label_splits.ravel()]
