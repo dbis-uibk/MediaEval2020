@@ -20,7 +20,7 @@ class Ensemble(BaseEstimator, ClassifierMixin):
                 self.models.append(split_model)
 
         for model, split in zip(self.models, self.label_splits):
-            model.fit(data=data, labels=labels[split], epochs=epochs)
+            model.fit(data, labels[split], epochs=epochs)
 
     def predict(self, data):
         return self._ensamble_predict(data, type='label')
