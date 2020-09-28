@@ -1,9 +1,8 @@
 """One vs Rest CNN plan."""
-import numpy as np
-
 from dbispipeline.evaluators import FixedSplitEvaluator
 from dbispipeline.evaluators import ModelCallbackWrapper
 import dbispipeline.result_handlers
+import numpy as np
 from sklearn.pipeline import Pipeline
 
 from mediaeval2020 import common
@@ -25,7 +24,6 @@ pipeline = Pipeline([
      Ensemble(
          base_estimator=CNNModel(
              epochs=8,
-             dataloader=dataloader,
              block_sizes=[
                  32,
                  32,
