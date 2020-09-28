@@ -24,10 +24,10 @@ class Ensemble(BaseEstimator, ClassifierMixin):
             model.fit(data, labels[..., split], epochs=epochs)
 
     def predict(self, data):
-        return self._ensamble_predict(data, type='label')
+        return self._ensamble_predict(data, prediction_type='label')
 
     def predict_proba(self, data):
-        return self._ensamble_predict(data, type='proba')
+        return self._ensamble_predict(data, prediction_type='proba')
 
     def _ensamble_predict(self, data, prediction_type):
         predictions = []
@@ -38,4 +38,4 @@ class Ensemble(BaseEstimator, ClassifierMixin):
                 predictions.append(model.predict(data))
 
         predictions = np.stack(predictions, axis=-1)
-        return predictions[..., self.label_splits.ravel()]
+        return predictions[..., np.argsort(self.label_splits.ravel())]
