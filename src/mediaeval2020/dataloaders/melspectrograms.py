@@ -139,3 +139,18 @@ class MelSpectPickleLoader(TrainValidateTestLoader):
         This is for storing its state in the database.
         """
         return self.data['configuration']
+
+
+def labels_to_indices(dataloader, label_list):
+    """Converts the label_list to an index array."""
+    classes = dataloader.configuration['classes']
+    class_prefix = 'mood/theme---'
+
+    indices = []
+    for label in label_list:
+        if not label.startswith(class_prefix):
+            label = class_prefix + label
+
+        indices.append(classes.index(label))
+
+    return np.array(indices)
