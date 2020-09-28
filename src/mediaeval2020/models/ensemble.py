@@ -15,7 +15,7 @@ class Ensemble(BaseEstimator, ClassifierMixin):
 
     def fit(self, data, labels, epochs=None):
         if len(self.models) == 0:
-            for split in self.label_splits:
+            for _ in self.label_splits:
                 split_model = clone(self.base_estimator)
                 split_model.label_splits = self.label_splits
                 self.models.append(split_model)
@@ -29,13 +29,13 @@ class Ensemble(BaseEstimator, ClassifierMixin):
     def predict_proba(self, data):
         return self._ensamble_predict(data, type='proba')
 
-    def _ensamble_predict(self, data, type):
+    def _ensamble_predict(self, data, prediction_type):
         predictions = []
         for model in self.models:
-            if type == 'proba':
+            if prediction_type == 'proba':
                 predictions.append(model.predict_proba(data))
-            elif type == 'label':
+            elif prediction_type == 'label':
                 predictions.append(model.predict(data))
 
         predictions = np.stack(predictions, axis=-1)
-        return predictions[self.label_splits.ravel()]
+        return predictions[..., self.label_splits.ravel()]

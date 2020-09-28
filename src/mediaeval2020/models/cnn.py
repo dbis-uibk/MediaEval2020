@@ -2,21 +2,13 @@ import numpy as np
 from sklearn.base import BaseEstimator
 from sklearn.base import ClassifierMixin
 from sklearn.metrics import roc_curve
-import tensorflow.compat.v2.keras.backend as K
 from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import AlphaDropout
-from tensorflow.keras.layers import BatchNormalization
-from tensorflow.keras.layers import Concatenate
 from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Input
-from tensorflow.keras.layers import Lambda
 from tensorflow.keras.layers import MaxPooling2D
-from tensorflow.keras.layers import Multiply
-from tensorflow.keras.layers import Permute
-from tensorflow.keras.layers import RepeatVector
-from tensorflow.keras.layers import Reshape
 from tensorflow.keras.layers import ZeroPadding2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import RMSprop
@@ -67,7 +59,7 @@ class CNNModel(BaseEstimator, ClassifierMixin):
 
             if validation_data and self.label_splits is not None:
                 data, labels = validation_data
-                self.validate(data, labels[self.label_splits])
+                self.validate(data, labels[..., self.label_splits])
             elif validation_data and self.label_splits is None:
                 self.validate(*validation_data)
             else:
@@ -113,8 +105,6 @@ class CNNModel(BaseEstimator, ClassifierMixin):
         self.model.summary()
 
     def _cnn_layers(self, input_shape, output_shape):
-        channel_axis = 3
-
         melgram_input = Input(shape=input_shape, dtype='float32')
 
         # Input block
