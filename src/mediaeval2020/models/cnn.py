@@ -65,10 +65,10 @@ class CNNModel(BaseEstimator, ClassifierMixin):
             except (NotImplementedError, AttributeError):
                 validation_data = None
 
-            if validation_data and self.label_splits:
+            if validation_data and self.label_splits is not None:
                 data, labels = validation_data
                 self.validate(data, labels[self.label_splits])
-            elif validation_data and not self.label_splits:
+            elif validation_data and self.label_splits is None:
                 self.validate(*validation_data)
             else:
                 self.threshold(np.full(output_shape, .5))
