@@ -1,4 +1,4 @@
-"""One vs Rest CNN plan."""
+"""Ensemble plan linear split."""
 from dbispipeline.evaluators import FixedSplitEvaluator
 from dbispipeline.evaluators import ModelCallbackWrapper
 import dbispipeline.result_handlers
