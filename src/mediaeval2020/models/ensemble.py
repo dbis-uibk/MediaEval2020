@@ -15,9 +15,9 @@ class Ensemble(BaseEstimator, ClassifierMixin):
 
     def fit(self, data, labels, epochs=None):
         if len(self.models) == 0:
-            for _ in self.label_splits:
+            for split in self.label_splits:
                 split_model = clone(self.base_estimator)
-                split_model.label_splits = self.label_splits
+                split_model.label_split = split
                 self.models.append(split_model)
 
         for model, split in zip(self.models, self.label_splits):

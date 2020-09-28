@@ -30,7 +30,7 @@ class CNNModel(BaseEstimator, ClassifierMixin):
         self.epochs = epochs
         self.padding = padding
         self.dataloader = dataloader
-        self.label_splits = None
+        self.label_split = None
         if block_sizes is None:
             self.block_sizes = [32, 64, 64, 64]
         else:
@@ -57,10 +57,10 @@ class CNNModel(BaseEstimator, ClassifierMixin):
             except (NotImplementedError, AttributeError):
                 validation_data = None
 
-            if validation_data and self.label_splits is not None:
+            if validation_data and self.label_split is not None:
                 data, labels = validation_data
-                self.validate(data, labels[..., self.label_splits])
-            elif validation_data and self.label_splits is None:
+                self.validate(data, labels[..., self.label_split])
+            elif validation_data and self.label_split is None:
                 self.validate(*validation_data)
             else:
                 self.threshold(np.full(output_shape, .5))
