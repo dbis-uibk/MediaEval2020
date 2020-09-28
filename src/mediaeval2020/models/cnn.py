@@ -3,13 +3,12 @@ from sklearn.base import BaseEstimator
 from sklearn.base import ClassifierMixin
 from sklearn.metrics import roc_curve
 import tensorflow.compat.v2.keras.backend as K
-from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import AlphaDropout
 from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.layers import Concatenate
 from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import AlphaDropout
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Input
 from tensorflow.keras.layers import Lambda
@@ -20,6 +19,7 @@ from tensorflow.keras.layers import RepeatVector
 from tensorflow.keras.layers import Reshape
 from tensorflow.keras.layers import ZeroPadding2D
 from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import RMSprop
 
 from ..utils import cached_model_predict
 from ..utils import cached_model_predict_clear
@@ -38,6 +38,7 @@ class CNNModel(BaseEstimator, ClassifierMixin):
         self.epochs = epochs
         self.padding = padding
         self.dataloader = dataloader
+        self.label_splits = None
         if block_sizes is None:
             self.block_sizes = [32, 64, 64, 64]
         else:
@@ -64,7 +65,10 @@ class CNNModel(BaseEstimator, ClassifierMixin):
             except (NotImplementedError, AttributeError):
                 validation_data = None
 
-            if validation_data:
+            if validation_data and self.label_splits:
+                data, labels = validation_data
+                self.validate(data, labels[self.label_splits])
+            elif validation_data and not self.label_splits:
                 self.validate(*validation_data)
             else:
                 self.threshold(np.full(output_shape, .5))

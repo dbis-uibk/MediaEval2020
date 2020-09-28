@@ -1,8 +1,8 @@
 """Module contains ensemble models."""
 import numpy as np
-from sklearn.base import clone
 from sklearn.base import BaseEstimator
 from sklearn.base import ClassifierMixin
+from sklearn.base import clone
 
 
 class Ensemble(BaseEstimator, ClassifierMixin):
@@ -17,6 +17,7 @@ class Ensemble(BaseEstimator, ClassifierMixin):
         if len(self.models) == 0:
             for split in self.label_splits:
                 split_model = clone(self.base_estimator)
+                split_model.label_splits = self.label_splits
                 self.models.append(split_model)
 
         for model, split in zip(self.models, self.label_splits):

@@ -24,6 +24,7 @@ pipeline = Pipeline([
      Ensemble(
          base_estimator=CNNModel(
              epochs=8,
+             dataloader=dataloader,
              block_sizes=[
                  32,
                  32,
