@@ -8,7 +8,7 @@ cache = {'model': None, 'X': None, 'y': None}
 
 
 def cached_model_predict(model, X):
-    if not np.array_equal(cache['X'], X):
+    if model != cache['model'] or not np.array_equal(cache['X'], X):
         cache['model'] = model
         cache['X'] = X
         cache['y'] = model.predict(X)
