@@ -4,17 +4,19 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import normalize
 
-cache = {'X': None, 'y': None}
+cache = {'model': None, 'X': None, 'y': None}
 
 
 def cached_model_predict(model, X):
     if not np.array_equal(cache['X'], X):
+        cache['model'] = model
         cache['X'] = X
         cache['y'] = model.predict(X)
     return cache['y']
 
 
 def cached_model_predict_clear():
+    cache['model'] = None
     cache['X'] = None
     cache['y'] = None
 
