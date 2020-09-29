@@ -85,7 +85,6 @@ pipeline = Pipeline([
     ('model',
      Ensemble(
          base_estimator=CNNModel(
-             epochs=50,
              dataloader=dataloader,
              block_sizes=[
                  32,
@@ -96,6 +95,7 @@ pipeline = Pipeline([
              ],
          ),
          label_splits=label_splits,
+         epochs=50,
      )),
 ])
 

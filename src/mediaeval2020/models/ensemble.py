@@ -8,10 +8,11 @@ from sklearn.base import clone
 class Ensemble(BaseEstimator, ClassifierMixin):
     """Splits label prediction to multiple classifiers."""
 
-    def __init__(self, base_estimator, label_splits):
+    def __init__(self, base_estimator, label_splits, epochs=None):
         """Creates the object."""
         self.base_estimator = base_estimator
         self.label_splits = label_splits
+        self.epochs = epochs
 
         self.models = []
 
@@ -20,6 +21,8 @@ class Ensemble(BaseEstimator, ClassifierMixin):
         if len(self.models) == 0:
             for split in self.label_splits:
                 split_model = clone(self.base_estimator)
+                if self.epochs is not None:
+                    split_model.epochs = self.epochs
                 split_model.label_split = split
                 self.models.append(split_model)
 
