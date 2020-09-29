@@ -1,8 +1,8 @@
+"""Analytics code used to process results."""
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from tabulate import tabulate
 
 
 def print_confusion_matrix(confusion_matrix,
@@ -155,14 +155,20 @@ def extract_best_epoch(outcome, metric):
     max_score = float('-inf')
 
     for epoch, score in outcome.items():
-        if max_score <= score[metric]:
-            max_score = score[metric]
-            best_epoch = epoch
+        try:
+            if max_score <= score[metric]:
+                max_score = score[metric]
+                best_epoch = epoch
+        except TypeError:
+            return None
 
     return best_epoch
 
 
 def extract_best_outcome(outcome, metric):
     max_epoch = extract_best_epoch(outcome, metric)
+
+    if max_epoch is None:
+        return outcome
 
     return outcome[max_epoch]
