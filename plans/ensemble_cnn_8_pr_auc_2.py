@@ -2,7 +2,6 @@
 from dbispipeline.evaluators import FixedSplitEvaluator
 from dbispipeline.evaluators import ModelCallbackWrapper
 import dbispipeline.result_handlers
-import numpy as np
 from sklearn.pipeline import Pipeline
 
 from mediaeval2020 import common
@@ -13,7 +12,7 @@ from mediaeval2020.models.ensemble import Ensemble
 
 dataloader = MelSpectPickleLoader('data/mediaeval2020/melspect_1366.pickle')
 
-label_splits = np.array([
+label_splits = [
     labels_to_indices(
         dataloader=dataloader,
         label_list=[
@@ -80,7 +79,7 @@ label_splits = np.array([
             'film',
         ],
     ),
-])
+]
 
 pipeline = Pipeline([
     ('model',

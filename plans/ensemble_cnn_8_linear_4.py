@@ -12,12 +12,12 @@ from mediaeval2020.models.ensemble import Ensemble
 
 dataloader = MelSpectPickleLoader('data/mediaeval2020/melspect_1366.pickle')
 
-label_splits = np.array([
+label_splits = [
     np.arange(0, 14, 1),
     np.arange(14, 28, 1),
     np.arange(28, 42, 1),
     np.arange(42, 56, 1),
-])
+]
 
 pipeline = Pipeline([
     ('model',

@@ -9,12 +9,12 @@ from mediaeval2020.models.ensemble import Ensemble
 
 data = np.arange(4 * 4).reshape((4, 4))
 labels = np.arange(4 * 16).reshape((4, 16))
-label_splits = np.array([
-    np.array([1, 3, 5, 7]),
-    np.array([0, 2, 4, 6]),
-    np.array([8, 11, 14, 15]),
-    np.array([13, 10, 12, 9]),
-])
+label_splits = [
+    np.array([1, 3, 5]),
+    [0, 2, 4],
+    np.array([8, 11, 14, 15, 7, 9]),
+    [13, 10, 12, 6],
+]
 
 
 class DummyClassifier(BaseEstimator, ClassifierMixin):

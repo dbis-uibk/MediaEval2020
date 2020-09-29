@@ -46,4 +46,6 @@ class Ensemble(BaseEstimator, ClassifierMixin):
                 predictions.append(model.predict(data))
 
         predictions = np.concatenate(predictions, axis=1)
-        return predictions[..., np.argsort(self.label_splits.ravel())]
+
+        label_order = np.concatenate(self.label_splits, axis=0)
+        return predictions[..., np.argsort(label_order)]
