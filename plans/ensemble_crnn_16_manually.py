@@ -7,7 +7,7 @@ from sklearn.pipeline import Pipeline
 from mediaeval2020 import common
 from mediaeval2020.dataloaders.melspectrograms import MelSpectPickleLoader
 from mediaeval2020.dataloaders.melspectrograms import labels_to_indices
-from mediaeval2020.models.cnn import CNNModel
+from mediaeval2020.models.crnn import CRNNModel
 from mediaeval2020.models.ensemble import Ensemble
 
 dataloader = MelSpectPickleLoader('data/mediaeval2020/melspect_1366.pickle')
@@ -84,8 +84,9 @@ label_splits = [
 pipeline = Pipeline([
     ('model',
      Ensemble(
-         base_estimator=CNNModel(dataloader=dataloader),
-         epochs=50,
+         base_estimator=CRNNModel(dataloader=dataloader),
+         label_splits=label_splits,
+         epochs=16,
      )),
 ])
 
