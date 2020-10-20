@@ -42,6 +42,7 @@ class CRNNModel(BaseEstimator, ClassifierMixin):
         self.dataloader = dataloader
         self.output_dropout = output_dropout
         self.attention = attention
+        self.label_split = None
         self.network_input_width = 1440
         self.model = None
         self.threshold = None
@@ -65,7 +66,16 @@ class CRNNModel(BaseEstimator, ClassifierMixin):
             except (NotImplementedError, AttributeError):
                 validation_data = None
 
-            if validation_data:
+            if validation_data and self.label_split is not None:
+                data, labels = validation_data
+                assert len(self.label_split) == output_shape
+                self.validate(data, labels[..., self.label_split])
+            elif validation_data and self.label_split is None:
+                labels = validation_data[1]
+                try:
+                    assert labels.shape[1] == output_shape
+                except IndexError:
+                    assert output_shape == 1
                 self.validate(*validation_data)
             else:
                 self.threshold = np.full(output_shape, .5)
