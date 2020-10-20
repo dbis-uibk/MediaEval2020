@@ -4,12 +4,11 @@ from sklearn.base import ClassifierMixin
 from sklearn.metrics import roc_curve
 import tensorflow.compat.v2.keras.backend as K
 from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import AlphaDropout
 from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.layers import Concatenate
 from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Dropout
-from tensorflow.keras.layers import ELU
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import GRU
 from tensorflow.keras.layers import Input
@@ -134,37 +133,37 @@ class CRNNModel(BaseEstimator, ClassifierMixin):
         # Conv block 1
         hidden = Conv2D(64, (3, 3), padding=self.padding, name='conv1')(hidden)
         hidden = BatchNormalization(axis=channel_axis, name='bn1')(hidden)
-        hidden = ELU()(hidden)
+        hidden = Activation('selu', name='selu-1')(hidden)
         hidden = MaxPooling2D(pool_size=(2, 2), strides=(2, 2),
                               name='pool1')(hidden)
-        hidden = Dropout(0.1, name='dropout1')(hidden)
+        hidden = AlphaDropout(0.1, name='dropout1')(hidden)
 
         # Conv block 2
         hidden = Conv2D(128, (3, 3), padding=self.padding,
                         name='conv2')(hidden)
         hidden = BatchNormalization(axis=channel_axis, name='bn2')(hidden)
-        hidden = ELU()(hidden)
+        hidden = Activation('selu', name='selu-2')(hidden)
         hidden = MaxPooling2D(pool_size=(3, 3), strides=(3, 3),
                               name='pool2')(hidden)
-        hidden = Dropout(0.1, name='dropout2')(hidden)
+        hidden = AlphaDropout(0.1, name='dropout2')(hidden)
 
         # Conv block 3
         hidden = Conv2D(128, (3, 3), padding=self.padding,
                         name='conv3')(hidden)
         hidden = BatchNormalization(axis=channel_axis, name='bn3')(hidden)
-        hidden = ELU()(hidden)
+        hidden = Activation('selu', name='selu-3')(hidden)
         hidden = MaxPooling2D(pool_size=(4, 4), strides=(4, 4),
                               name='pool3')(hidden)
-        hidden = Dropout(0.1, name='dropout3')(hidden)
+        hidden = AlphaDropout(0.1, name='dropout3')(hidden)
 
         # Conv block 4
         hidden = Conv2D(128, (3, 3), padding=self.padding,
                         name='conv4')(hidden)
         hidden = BatchNormalization(axis=channel_axis, name='bn4')(hidden)
-        hidden = ELU()(hidden)
+        hidden = Activation('selu', name='selu-4')(hidden)
         hidden = MaxPooling2D(pool_size=(4, 4), strides=(4, 4),
                               name='pool4')(hidden)
-        hidden = Dropout(0.1, name='dropout4')(hidden)
+        hidden = AlphaDropout(0.1, name='dropout4')(hidden)
 
         # reshaping
         hidden = Reshape((15, 128))(hidden)
@@ -186,7 +185,7 @@ class CRNNModel(BaseEstimator, ClassifierMixin):
             hidden = Lambda(lambda xin: K.sum(xin, axis=1))(merged)
 
         if self.output_dropout:
-            hidden = Dropout(self.output_dropout)(hidden)
+            hidden = AlphaDropout(self.output_dropout)(hidden)
         output = Dense(output_shape, activation='sigmoid',
                        name='crnn_output')(hidden)
 
