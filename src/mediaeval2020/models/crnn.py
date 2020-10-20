@@ -44,6 +44,7 @@ class CRNNModel(BaseEstimator, ClassifierMixin):
         self.attention = attention
         self.network_input_width = 1440
         self.model = None
+        self.threshold = None
 
     def fit(self, X, y, epochs=None):
         X = self._reshape_data(X)
@@ -67,7 +68,7 @@ class CRNNModel(BaseEstimator, ClassifierMixin):
             if validation_data:
                 self.validate(*validation_data)
             else:
-                self.threshold(np.full(output_shape, .5))
+                self.threshold = np.full(output_shape, .5)
 
     def validate(self, X, y):
         X = self._reshape_data(X)
@@ -100,15 +101,15 @@ class CRNNModel(BaseEstimator, ClassifierMixin):
     def _create_model(self, input_shape, output_shape):
         melgram_input, output = self._crnn_layers(input_shape, output_shape)
         self.model = Model(inputs=melgram_input, outputs=output)
-        self.model.compile(optimizer="adam",
-                           loss="categorical_crossentropy",
+        self.model.compile(optimizer='adam',
+                           loss='categorical_crossentropy',
                            metrics=['categorical_accuracy'])
         self.model.summary()
 
     def _crnn_layers(self, input_shape, output_shape):
         channel_axis = 3
 
-        melgram_input = Input(shape=input_shape, dtype="float32")
+        melgram_input = Input(shape=input_shape, dtype='float32')
 
         # Input block
         padding = self.network_input_width - input_shape[1]
@@ -167,7 +168,7 @@ class CRNNModel(BaseEstimator, ClassifierMixin):
         if self.attention:
             attention = Dense(1)(hidden)
             attention = Flatten()(attention)
-            attention_act = Activation("softmax")(attention)
+            attention_act = Activation('softmax')(attention)
             attention = RepeatVector(embed_size)(attention_act)
             attention = Permute((2, 1))(attention)
 
@@ -231,19 +232,19 @@ class CRNNPlusModel(CRNNModel):
     def _create_model(self, input_shape, output_shape):
         mel_input, crnn_output = self._crnn_layers(input_shape[0],
                                                    output_shape)
-        essentia_input = Input(shape=input_shape[1], dtype="float32")
+        essentia_input = Input(shape=input_shape[1], dtype='float32')
 
         concat = Concatenate()([crnn_output, essentia_input])
         if self.concat_bn:
             concat = BatchNormalization(axis=-1, name='concat_bn')(concat)
 
         # Dense
-        dense = Dense(128, activation="tanh", name="dense_10")(concat)
+        dense = Dense(128, activation='tanh', name='dense_10')(concat)
         output = Dense(output_shape, activation='sigmoid',
                        name='output')(dense)
 
         self.model = Model(inputs=[mel_input, essentia_input], outputs=output)
-        self.model.compile(optimizer="adam",
-                           loss="binary_crossentropy",
+        self.model.compile(optimizer='adam',
+                           loss='binary_crossentropy',
                            metrics=['accuracy'])
         self.model.summary()

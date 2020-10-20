@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.core._multiarray_umath import ndarray
 from sklearn.base import BaseEstimator
 from sklearn.base import ClassifierMixin
 from sklearn.metrics import roc_curve
@@ -37,6 +38,7 @@ class CNNModel(BaseEstimator, ClassifierMixin):
             self.block_sizes = block_sizes
         self.network_input_width = 1440
         self.model = None
+        self.threshold = None
 
     def fit(self, X, y, epochs=None):
         X = self._reshape_data(X)
@@ -69,7 +71,7 @@ class CNNModel(BaseEstimator, ClassifierMixin):
                     assert output_shape == 1
                 self.validate(*validation_data)
             else:
-                self.threshold(np.full(output_shape, .5))
+                self.threshold = np.full(output_shape, .5)
 
     def validate(self, X, y):
         X = self._reshape_data(X)
