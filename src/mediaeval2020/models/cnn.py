@@ -4,9 +4,9 @@ from sklearn.base import BaseEstimator
 from sklearn.base import ClassifierMixin
 from sklearn.metrics import roc_curve
 from tensorflow.keras.layers import Activation
-from tensorflow.keras.layers import AlphaDropout
 from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dropout
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Input
 from tensorflow.keras.layers import MaxPooling2D
@@ -141,8 +141,8 @@ class CNNModel(BaseEstimator, ClassifierMixin):
             kernel_initializer='lecun_normal',
             bias_initializer='zeros',
         )(hidden)
-        hidden = Activation('selu', name='selu6')(hidden)
-        hidden = AlphaDropout(0.2)(hidden)
+        hidden = Activation('elu', name='elu6')(hidden)
+        hidden = Dropout(0.2)(hidden)
         hidden = Dense(
             output_shape,
             kernel_initializer='lecun_normal',
@@ -176,7 +176,7 @@ def conv_block(block_id, filters, padding, input_layer):
         kernel_initializer='lecun_normal',
         bias_initializer='zeros',
     )(input_layer)
-    hidden = Activation('selu', name=name + 'selu-1')(hidden)
+    hidden = Activation('elu', name=name + 'elu-1')(hidden)
     hidden = Conv2D(
         filters,
         (3, 3),
@@ -184,8 +184,8 @@ def conv_block(block_id, filters, padding, input_layer):
         kernel_initializer='lecun_normal',
         bias_initializer='zeros',
     )(hidden)
-    hidden = Activation('selu', name=name + 'selu-2')(hidden)
+    hidden = Activation('elu', name=name + 'elu-2')(hidden)
     hidden = MaxPooling2D(pool_size=(2, 2), name=name + 'pool-1')(hidden)
-    output_layer = AlphaDropout(0.1, name=name + 'dropout-1')(hidden)
+    output_layer = Dropout(0.1, name=name + 'dropout-1')(hidden)
 
     return output_layer
