@@ -34,17 +34,6 @@ def _keep_sample(labels, num_windows):
                 return _get_proba(group, num_windows) < random.random()
 
 
-def _select_test(dataset, num_windows):
-    samples = []
-    labels = []
-    for i, (x, y) in enumerate(zip(*dataset)):
-        if i % 14 == 0:
-            samples.append(x)
-            labels.append(y)
-
-    return np.array(samples), np.array(labels)
-
-
 def _get_proba(group, num_windows):
     return group / num_windows
 
@@ -98,11 +87,6 @@ _log_shape(data, 'validate')
 data['validate'] = _select_samples(data['validate'],
                                    data['configuration']['num_windows'])
 _log_shape(data, 'validate')
-
-logger.info('Select samples for test.')
-_log_shape(data, 'test')
-data['test'] = _select_test(data['test'], data['configuration']['num_windows'])
-_log_shape(data, 'test')
 
 data['configuration']['label_groups'] = _label_groups()
 
