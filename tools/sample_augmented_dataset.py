@@ -27,7 +27,7 @@ def _select_samples(dataset, num_windows):
 
 
 def _keep_sample(labels, num_windows):
-    for group in range(1, 4):
+    for group in range(1, 5):
         label_group = _label_groups()[group]
         for label in label_group:
             if labels[label] == 1:
