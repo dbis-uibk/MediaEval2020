@@ -63,7 +63,8 @@ class MelSpectrogramsLoader(TrainValidateTestLoader):
                                                 window_size=self.window_size,
                                                 num_windows=self.num_windows)
                 X.extend(sample_data)
-                y.extend([sample['TAGS']] * self.num_windows)
+                for _ in range(self.num_windows):
+                    y.append(sample['TAGS'])
             else:
                 center_sample = utils.get_windows(sample=sample_data,
                                                   window='center',
@@ -72,7 +73,7 @@ class MelSpectrogramsLoader(TrainValidateTestLoader):
                 X.append(center_sample[0])
                 y.append(sample['TAGS'])
 
-        assert len(X) == len(y)
+            assert len(X) == len(y)
 
         X = np.array(X)
         y = np.array(y)
