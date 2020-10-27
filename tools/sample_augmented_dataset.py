@@ -26,10 +26,11 @@ def _select_samples(dataset, num_windows):
     return np.array(samples), np.array(labels)
 
 
-def _keep_sample(label, num_windows):
-    for group, labels in _label_groups().items():
-        if label in labels:
-            return _get_proba(group, num_windows) < random.random()
+def _keep_sample(labels, num_windows):
+    for group, label_group in _label_groups().items():
+        for label in label_group:
+            if labels[label] == 1:
+                return _get_proba(group, num_windows) < random.random()
 
 
 def _select_test(dataset, num_windows):
