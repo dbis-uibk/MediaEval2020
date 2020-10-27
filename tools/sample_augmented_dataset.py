@@ -31,7 +31,7 @@ def _keep_sample(labels, num_windows):
         label_group = _label_groups()[group]
         for label in label_group:
             if labels[label] == 1:
-                return _get_proba(group, num_windows) < random.random()
+                return _get_proba(group, num_windows) >= random.random()
 
 
 def _get_proba(group, num_windows):
