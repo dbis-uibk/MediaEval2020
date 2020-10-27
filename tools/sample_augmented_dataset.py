@@ -5,7 +5,7 @@ from logzero import logger
 
 
 def _log_shape(data, subset):
-    logger.info(subset + ':', data[subset].shape)
+    logger.info(subset + ':', data[subset][0].shape, data[subset][1].shape)
 
 
 file_name = 'data/mediaeval2020/melspect_augmented_1366.pickle'
