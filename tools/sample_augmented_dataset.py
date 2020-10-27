@@ -8,17 +8,17 @@ import numpy as np
 
 def _log_shape(dataset, subset):
     logger.info(
-        '%s subset:  data: %d, labels: %d',
+        '%s subset:  data: %s, labels: %s',
         subset,
-        dataset[subset][0].shape,
-        dataset[subset][1].shape,
+        str(dataset[subset][0].shape),
+        str(dataset[subset][1].shape),
     )
 
 
 def _select_samples(dataset, num_windows):
     samples = []
     labels = []
-    for x, y in zip(dataset):
+    for x, y in zip(*dataset):
         if _keep_sample(y, num_windows):
             samples.append(x)
             labels.append(y)
