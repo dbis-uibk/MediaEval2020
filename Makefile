@@ -94,6 +94,7 @@ format: ## formats the code
 	yapf -i -r plans
 	yapf -i -r src
 	yapf -i -r tests
+	yapf -i -r tools
 
 bandit: ## static code checking to find security issues in code
 	bandit -r plans
