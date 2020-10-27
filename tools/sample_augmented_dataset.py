@@ -36,7 +36,7 @@ def _keep_sample(labels, num_windows):
 def _select_test(dataset, num_windows):
     samples = []
     labels = []
-    for i, (x, y) in enumerate(zip(dataset)):
+    for i, (x, y) in enumerate(zip(*dataset)):
         if i % 14 == 0:
             samples.append(x)
             labels.append(y)
