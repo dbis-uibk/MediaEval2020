@@ -27,7 +27,8 @@ def _select_samples(dataset, num_windows):
 
 
 def _keep_sample(labels, num_windows):
-    for group, label_group in _label_groups().items():
+    for group in range(1, 4):
+        label_group = _label_groups()[group]
         for label in label_group:
             if labels[label] == 1:
                 return _get_proba(group, num_windows) < random.random()

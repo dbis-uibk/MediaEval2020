@@ -72,6 +72,8 @@ class MelSpectrogramsLoader(TrainValidateTestLoader):
                 X.append(center_sample[0])
                 y.append(sample['TAGS'])
 
+        assert len(X) == len(y)
+
         X = np.array(X)
         y = np.array(y)
         X = X.reshape(*X.shape, 1)
