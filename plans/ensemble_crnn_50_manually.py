@@ -15,7 +15,7 @@ dataloader = MelSpectPickleLoader('data/mediaeval2020/melspect_1366.pickle')
 label_splits = [
     labels_to_indices(
         dataloader=dataloader,
-        label_list=[
+        label_list=[  # theme
             'action',
             'adventure',
             'advertising',
@@ -31,7 +31,6 @@ label_splits = [
             'film',
             'game',
             'holiday',
-            'love',
             'movie',
             'nature',
             'party',
@@ -41,12 +40,11 @@ label_splits = [
             'summer',
             'trailer',
             'travel',
-            'upbeat',
         ],
     ),
     labels_to_indices(
         dataloader=dataloader,
-        label_list=[
+        label_list=[  # mood
             'calm',
             'cool',
             'dark',
@@ -63,6 +61,7 @@ label_splits = [
             'heavy',
             'hopeful',
             'inspiring',
+            'love',
             'meditative',
             'melancholic',
             'melodic',
@@ -76,6 +75,7 @@ label_splits = [
             'slow',
             'soft',
             'space',
+            'upbeat',
             'uplifting',
         ],
     ),
