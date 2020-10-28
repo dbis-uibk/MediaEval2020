@@ -73,8 +73,7 @@ class CNNModel(BaseEstimator, ClassifierMixin):
                 self.threshold = np.full(output_shape, .5)
 
     def validate(self, X, y):
-        X = self._reshape_data(X)
-        y_pred = self.model.predict_proba(X)
+        y_pred = self.predict_proba(X)
         threshold = []
         for label_idx in range(y_pred.shape[1]):
             fpr, tpr, thresholds = roc_curve(y[..., label_idx],
