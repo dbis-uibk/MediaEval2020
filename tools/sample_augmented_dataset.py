@@ -72,7 +72,7 @@ def _label_groups():
 
 
 if len(sys.argv) > 1:
-    supersampling = sys.argv[1]
+    supersampling = float(sys.argv[1])
 else:
     supersampling = 1
 
