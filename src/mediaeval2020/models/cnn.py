@@ -1,5 +1,4 @@
 import numpy as np
-from numpy.core._multiarray_umath import ndarray
 from sklearn.base import BaseEstimator
 from sklearn.base import ClassifierMixin
 from sklearn.metrics import roc_curve
@@ -75,7 +74,7 @@ class CNNModel(BaseEstimator, ClassifierMixin):
 
     def validate(self, X, y):
         X = self._reshape_data(X)
-        y_pred = self.model.predict(X)
+        y_pred = self.model.predict_proba(X)
         threshold = []
         for label_idx in range(y_pred.shape[1]):
             fpr, tpr, thresholds = roc_curve(y[..., label_idx],
