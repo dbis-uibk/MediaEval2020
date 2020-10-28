@@ -67,9 +67,9 @@ class MelSpectrogramsLoader(TrainValidateTestLoader):
                     y.append(sample['TAGS'])
             else:
                 sample_data = utils.get_windows(sample=sample_data,
-                                                  window=self.window,
-                                                  window_size=self.window_size,
-                                                  num_windows=1)
+                                                window=self.window,
+                                                window_size=self.window_size,
+                                                num_windows=1)
                 X.append(sample_data[0])
                 y.append(sample['TAGS'])
 
