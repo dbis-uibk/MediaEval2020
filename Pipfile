@@ -36,6 +36,6 @@ mediaeval2020 = {path = ".", editable = true}
 click = "*"
 logzero = "*"
 tensorflow = "*"
-dbispipeline = "==0.7.1"
+dbispipeline = "==0.8.6"
 jupyterlab = "*"
 seaborn = "*"
