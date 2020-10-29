@@ -1,4 +1,4 @@
-"""Ensemble plan split by pr-auc based on cnn results."""
+"""Ensemble plan manually split by type moode/theme."""
 from dbispipeline.evaluators import EpochEvaluator
 from dbispipeline.evaluators import ModelCallbackWrapper
 import dbispipeline.result_handlers
@@ -10,103 +10,74 @@ from mediaeval2020.dataloaders.melspectrograms import labels_to_indices
 from mediaeval2020.models.cnn import CNNModel
 from mediaeval2020.models.ensemble import Ensemble
 
-dataloader = MelSpectPickleLoader('data/mediaeval2020/melspect_1366.pickle')
+dataloader = MelSpectPickleLoader(
+    'data/mediaeval2020/melspect_augmented_1366_sampled.pickle')
 
 label_splits = [
     labels_to_indices(
         dataloader=dataloader,
         label_list=[
-            'travel',
-            'retro',
-            'fast',
+            'sexy',
             'soundscape',
             'holiday',
             'hopeful',
+            'travel',
+            'heavy',
             'cool',
-        ],
-    ),
-    labels_to_indices(
-        dataloader=dataloader,
-        label_list=[
-            'groovy',
-            'nature',
-            'space',
-            'game',
-            'party',
-            'slow',
             'movie',
-        ],
-    ),
-    labels_to_indices(
-        dataloader=dataloader,
-        label_list=[
-            'drama',
+            'nature',
+            'game',
+            'powerful',
             'action',
+            'drama',
+            'space',
+            'fast',
+            'party',
+            'ballad',
+            'slow',
+            'retro',
+            'background',
+            'adventure',
+            'calm',
             'melancholic',
             'dramatic',
-            'calm',
-            'background',
-            'funny',
-        ],
-    ),
-    labels_to_indices(
-        dataloader=dataloader,
-        label_list=[
+            'groovy',
             'positive',
-            'ballad',
-            'upbeat',
-            'uplifting',
-            'romantic',
-            'adventure',
             'soft',
+            'upbeat',
         ],
     ),
     labels_to_indices(
         dataloader=dataloader,
         label_list=[
+            'uplifting',
             'fun',
-            'powerful',
-            'sport',
-            'trailer',
-            'corporate',
-            'sexy',
-            'commercial',
-        ],
-    ),
-    labels_to_indices(
-        dataloader=dataloader,
-        label_list=[
-            'inspiring',
-            'advertising',
             'documentary',
-            'motivational',
-            'melodic',
-            'dream',
-            'sad',
-        ],
-    ),
-    labels_to_indices(
-        dataloader=dataloader,
-        label_list=[
-            'christmas',
-            'meditative',
+            'inspiring',
+            'trailer',
+            'funny',
+            'romantic',
+            'commercial',
+            'sport',
             'love',
-            'children',
-            'heavy',
-            'summer',
-            'relaxing',
-        ],
-    ),
-    labels_to_indices(
-        dataloader=dataloader,
-        label_list=[
+            'dream',
+            'melodic',
+            'sad',
+            'advertising',
+            'motivational',
+            'corporate',
+            'meditative',
             'energetic',
-            'deep',
             'dark',
+            'relaxing',
+            'christmas',
+            'children',
             'emotional',
             'happy',
             'epic',
+            'summer',
             'film',
+            'deep',
         ],
     ),
 ]
