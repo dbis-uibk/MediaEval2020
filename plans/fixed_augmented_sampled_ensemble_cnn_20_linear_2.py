@@ -32,7 +32,7 @@ pipeline = Pipeline([
              ],
          ),
          label_splits=label_splits,
-         epochs=4,
+         epochs=20,
      )),
 ])
 

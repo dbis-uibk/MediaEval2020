@@ -1,4 +1,4 @@
-"""Ensemble plan manually split by type moode/theme."""
+"""Ensemble plan manually split by type moode/theme/unsure."""
 from dbispipeline.evaluators import FixedSplitEvaluator
 from dbispipeline.evaluators import ModelCallbackWrapper
 import dbispipeline.result_handlers
@@ -16,24 +16,15 @@ dataloader = MelSpectPickleLoader(
 label_splits = [
     labels_to_indices(
         dataloader=dataloader,
-        label_list=[  # theme
+        label_list=[  # unsure
             'action',
             'adventure',
-            'advertising',
             'background',
-            'ballad',
-            'children',
-            'christmas',
-            'commercial',
-            'corporate',
-            'documentary',
             'drama',
             'dream',
-            'film',
-            'game',
-            'holiday',
             'love',
-            'movie',
+            'melodic',
+            'motivational',
             'nature',
             'party',
             'retro',
@@ -41,6 +32,23 @@ label_splits = [
             'space',
             'sport',
             'summer',
+            'upbeat',
+        ],
+    ),
+    labels_to_indices(
+        dataloader=dataloader,
+        label_list=[  # theme
+            'advertising',
+            'ballad',
+            'children',
+            'christmas',
+            'commercial',
+            'corporate',
+            'documentary',
+            'film',
+            'game',
+            'holiday',
+            'movie',
             'trailer',
             'travel',
         ],
@@ -66,8 +74,6 @@ label_splits = [
             'inspiring',
             'meditative',
             'melancholic',
-            'melodic',
-            'motivational',
             'positive',
             'powerful',
             'relaxing',
@@ -76,7 +82,6 @@ label_splits = [
             'sexy',
             'slow',
             'soft',
-            'upbeat',
             'uplifting',
         ],
     ),
@@ -96,13 +101,13 @@ pipeline = Pipeline([
              ],
          ),
          label_splits=label_splits,
-         epochs=4,
+         epochs=20,
      )),
 ])
 
 evaluator = ModelCallbackWrapper(
     FixedSplitEvaluator(**common.fixed_split_params()),
-    lambda model: common.store_prediction(model, dataloader, 'final_'),
+    lambda model: common.store_prediction(model, dataloader),
 )
 
 result_handlers = [
