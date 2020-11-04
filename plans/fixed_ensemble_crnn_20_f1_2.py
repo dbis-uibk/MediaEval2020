@@ -1,5 +1,5 @@
 """Ensemble plan manually split by type moode/theme."""
-from dbispipeline.evaluators import EpochEvaluator
+from dbispipeline.evaluators import FixedSplitEvaluator
 from dbispipeline.evaluators import ModelCallbackWrapper
 import dbispipeline.result_handlers
 from sklearn.pipeline import Pipeline
@@ -7,7 +7,7 @@ from sklearn.pipeline import Pipeline
 from mediaeval2020 import common
 from mediaeval2020.dataloaders.melspectrograms import MelSpectPickleLoader
 from mediaeval2020.dataloaders.melspectrograms import labels_to_indices
-from mediaeval2020.models.cnn import CNNModel
+from mediaeval2020.models.crnn import CRNNModel
 from mediaeval2020.models.ensemble import Ensemble
 
 dataloader = MelSpectPickleLoader('data/mediaeval2020/melspect_1366.pickle')
@@ -16,66 +16,66 @@ label_splits = [
     labels_to_indices(
         dataloader=dataloader,
         label_list=[
-            'retro',
-            'sexy',
             'travel',
-            'fast',
+            'sexy',
+            'retro',
             'groovy',
+            'fast',
             'cool',
             'holiday',
-            'hopeful',
-            'movie',
-            'action',
-            'game',
             'soundscape',
-            'sport',
+            'hopeful',
+            'game',
             'space',
-            'nature',
+            'action',
+            'dramatic',
             'background',
             'heavy',
-            'ballad',
-            'funny',
-            'fun',
+            'movie',
+            'nature',
             'drama',
-            'party',
-            'powerful',
             'slow',
+            'sport',
+            'funny',
+            'party',
             'calm',
-            'dramatic',
-            'uplifting',
+            'trailer',
+            'ballad',
             'melancholic',
+            'fun',
+            'adventure',
         ],
     ),
     labels_to_indices(
         dataloader=dataloader,
         label_list=[
-            'upbeat',
             'positive',
-            'trailer',
-            'melodic',
-            'adventure',
+            'upbeat',
+            'powerful',
             'soft',
             'inspiring',
-            'advertising',
-            'commercial',
             'documentary',
+            'uplifting',
             'romantic',
+            'commercial',
             'corporate',
-            'motivational',
             'christmas',
+            'advertising',
             'dream',
-            'love',
-            'sad',
-            'deep',
+            'motivational',
             'children',
-            'summer',
+            'melodic',
+            'sad',
             'meditative',
-            'relaxing',
+            'love',
+            'summer',
             'energetic',
+            'relaxing',
             'dark',
-            'happy',
+            'deep',
             'epic',
             'emotional',
+            'happy',
             'film',
         ],
     ),
@@ -84,23 +84,14 @@ label_splits = [
 pipeline = Pipeline([
     ('model',
      Ensemble(
-         base_estimator=CNNModel(
-             dataloader=dataloader,
-             block_sizes=[
-                 32,
-                 32,
-                 64,
-                 64,
-                 64,
-             ],
-         ),
+         base_estimator=CRNNModel(dataloader=dataloader),
          label_splits=label_splits,
-         epochs=50,
+         epochs=20,
      )),
 ])
 
 evaluator = ModelCallbackWrapper(
-    EpochEvaluator(**common.fixed_split_params(), scoring_step_size=2),
+    FixedSplitEvaluator(**common.fixed_split_params()),
     lambda model: common.store_prediction(model, dataloader),
 )
 
