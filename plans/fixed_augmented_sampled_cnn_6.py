@@ -15,7 +15,7 @@ pipeline = Pipeline([
     (
         'model',
         CNNModel(
-            epochs=10,
+            epochs=6,
             dataloader=dataloader,
             block_sizes=[
                 32,

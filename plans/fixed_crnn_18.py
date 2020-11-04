@@ -11,7 +11,7 @@ from mediaeval2020.models.crnn import CRNNModel
 dataloader = MelSpectPickleLoader('data/mediaeval2020/melspect_1366.pickle')
 
 pipeline = Pipeline([
-    ('model', CRNNModel(epochs=28, dataloader=dataloader)),
+    ('model', CRNNModel(epochs=18, dataloader=dataloader)),
 ])
 
 evaluator = ModelCallbackWrapper(
