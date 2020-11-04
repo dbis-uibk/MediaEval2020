@@ -12,7 +12,7 @@ dataloader = MelSpectPickleLoader(
     'data/mediaeval2020/melspect_augmented_1366_sampled.pickle')
 
 pipeline = Pipeline([
-    ('model', CRNNModel(epochs=26, dataloader=dataloader)),
+    ('model', CRNNModel(epochs=20, dataloader=dataloader)),
 ])
 
 evaluator = ModelCallbackWrapper(

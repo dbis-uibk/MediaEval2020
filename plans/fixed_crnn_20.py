@@ -1,4 +1,4 @@
-"""CNN plan with best number of epochs."""
+"""CRNN plan."""
 from dbispipeline.evaluators import FixedSplitEvaluator
 from dbispipeline.evaluators import ModelCallbackWrapper
 import dbispipeline.result_handlers
@@ -6,25 +6,12 @@ from sklearn.pipeline import Pipeline
 
 from mediaeval2020 import common
 from mediaeval2020.dataloaders.melspectrograms import MelSpectPickleLoader
-from mediaeval2020.models.cnn import CNNModel
+from mediaeval2020.models.crnn import CRNNModel
 
 dataloader = MelSpectPickleLoader('data/mediaeval2020/melspect_1366.pickle')
 
 pipeline = Pipeline([
-    (
-        'model',
-        CNNModel(
-            epochs=12,
-            dataloader=dataloader,
-            block_sizes=[
-                32,
-                32,
-                64,
-                64,
-                64,
-            ],
-        ),
-    ),
+    ('model', CRNNModel(epochs=20, dataloader=dataloader)),
 ])
 
 evaluator = ModelCallbackWrapper(

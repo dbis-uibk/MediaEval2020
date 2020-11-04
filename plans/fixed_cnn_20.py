@@ -1,4 +1,4 @@
-"""CNN plan."""
+"""CNN plan with best number of epochs."""
 from dbispipeline.evaluators import FixedSplitEvaluator
 from dbispipeline.evaluators import ModelCallbackWrapper
 import dbispipeline.result_handlers
@@ -8,14 +8,13 @@ from mediaeval2020 import common
 from mediaeval2020.dataloaders.melspectrograms import MelSpectPickleLoader
 from mediaeval2020.models.cnn import CNNModel
 
-dataloader = MelSpectPickleLoader(
-    'data/mediaeval2020/melspect_augmented_1366_sampled.pickle')
+dataloader = MelSpectPickleLoader('data/mediaeval2020/melspect_1366.pickle')
 
 pipeline = Pipeline([
     (
         'model',
         CNNModel(
-            epochs=6,
+            epochs=20,
             dataloader=dataloader,
             block_sizes=[
                 32,

@@ -1,4 +1,4 @@
-"""CRNN plan."""
+"""CNN plan."""
 from dbispipeline.evaluators import FixedSplitEvaluator
 from dbispipeline.evaluators import ModelCallbackWrapper
 import dbispipeline.result_handlers
@@ -6,12 +6,26 @@ from sklearn.pipeline import Pipeline
 
 from mediaeval2020 import common
 from mediaeval2020.dataloaders.melspectrograms import MelSpectPickleLoader
-from mediaeval2020.models.crnn import CRNNModel
+from mediaeval2020.models.cnn import CNNModel
 
-dataloader = MelSpectPickleLoader('data/mediaeval2020/melspect_1366.pickle')
+dataloader = MelSpectPickleLoader(
+    'data/mediaeval2020/melspect_augmented_1366_sampled.pickle')
 
 pipeline = Pipeline([
-    ('model', CRNNModel(epochs=18, dataloader=dataloader)),
+    (
+        'model',
+        CNNModel(
+            epochs=20,
+            dataloader=dataloader,
+            block_sizes=[
+                32,
+                32,
+                64,
+                64,
+                64,
+            ],
+        ),
+    ),
 ])
 
 evaluator = ModelCallbackWrapper(
