@@ -4,6 +4,9 @@ This repository contains the implementation of our, team UIBK-DBIS, solution to 
 [Emotions and Themes in Music](https://multimediaeval.github.io/editions/2020/tasks/music/)
 task as part of [MediaEval 2020](https://multimediaeval.github.io/editions/2020/).
 
+The used tag groups can be found in the respective run configurations that can
+be found in the `plans` folder.
+
 ## Repository Structure
 
 The `results` folder contains the predictions, decisions and results of our
